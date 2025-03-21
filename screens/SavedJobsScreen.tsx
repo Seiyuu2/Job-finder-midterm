@@ -9,10 +9,12 @@ import JobCard from '../components/JobCard';
 type Props = NativeStackScreenProps<RootStackParamList, 'SavedJobsScreen'>;
 
 const SavedJobsScreen: React.FC<Props> = ({ navigation, route }) => {
-  // Optionally, if savedJobs are passed as route params:
-  const initialSavedJobs: Job[] = route.params?.savedJobs || [];
+  // The route now has savedJobs as defined in RootStackParamList
+  const initialSavedJobs: Job[] = route.params.savedJobs;
   const [savedJobs, setSavedJobs] = useState<Job[]>(initialSavedJobs);
 
+  // Optionally, if you want to implement removal functionality,
+  // you can integrate handleRemoveJob with a button on the JobCard.
   const handleRemoveJob = (job: Job) => {
     Alert.alert('Remove Job', 'Are you sure you want to remove this job?', [
       { text: 'Cancel' },
@@ -42,7 +44,6 @@ const SavedJobsScreen: React.FC<Props> = ({ navigation, route }) => {
         )}
       />
       <Button title="Remove Selected Job" onPress={() => {
-        // For demonstration, you might integrate a selection mechanism.
         Alert.alert('Remove a job by pressing its remove button on the card.');
       }} />
     </View>

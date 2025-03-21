@@ -8,10 +8,10 @@ import ApplicationFormScreen from '../screens/ApplicationFormScreen';
 import { ThemeContext } from '../context/ThemeContext';
 
 export type RootStackParamList = {
-  JobFinderScreen: undefined;
-  SavedJobsScreen: undefined;
-  ApplicationFormScreen: { job?: any; fromSaved?: boolean } | undefined;
-};
+    JobFinderScreen: undefined;
+    SavedJobsScreen: { savedJobs: Job[] }; // Now accepts savedJobs
+    ApplicationFormScreen: { job?: any; fromSaved?: boolean } | undefined;
+  };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
