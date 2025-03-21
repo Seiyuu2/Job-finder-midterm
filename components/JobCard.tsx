@@ -14,8 +14,8 @@ const JobCard: React.FC<JobCardProps> = ({ job, onSave, onApply, saved }) => {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{job.title}</Text>
-      <Text style={styles.company}>{job.company}</Text>
-      <Text style={styles.salary}>{job.salary}</Text>
+      <Text style={styles.company}>{job.companyName}</Text>
+      {job.salary && <Text style={styles.salary}>{job.salary}</Text>}
       {job.description && <Text style={styles.description}>{job.description}</Text>}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
