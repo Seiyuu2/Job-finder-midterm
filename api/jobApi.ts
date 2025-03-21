@@ -11,18 +11,21 @@ export type Job = {
 };
 
 export const fetchJobs = async (): Promise<Job[]> => {
-  try {
-    const response = await fetch('https://empllo.com/api/v1');
-    const data = await response.json();
-    console.log('Fetched data:', data); // Check what you're getting
-    // Extract the jobs array from the response
-    const jobs = data.jobs || [];
-    return jobs.map((job: Omit<Job, 'id'>) => ({
-      ...job,
+  // Hardcoded test data
+  return [
+    {
       id: uuidv4(),
-    }));
-  } catch (error) {
-    console.error('Error fetching jobs:', error);
-    return [];
-  }
+      title: 'Test Job Title',
+      companyName: 'Test Company',
+      salary: '$50,000',
+      description: 'This is a test job description for verifying the UI.',
+    },
+    {
+      id: uuidv4(),
+      title: 'Sample Developer',
+      companyName: 'Sample Inc.',
+      salary: '$60,000',
+      description: 'Looking for a skilled developer with expertise in React Native.',
+    },
+  ];
 };
