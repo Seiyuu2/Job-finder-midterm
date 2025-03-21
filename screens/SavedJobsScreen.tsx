@@ -1,25 +1,36 @@
 // src/screens/SavedJobsScreen.tsx
 import React, { useState } from 'react';
-import { View, FlatList, StyleSheet, Alert } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { Job } from '../api/jobApi';
 import JobCard from '../components/JobCard';
+import ConfirmModal from '../components/ConfirmModal';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SavedJobsScreen'>;
 
 const SavedJobsScreen: React.FC<Props> = ({ navigation, route }) => {
   const initialSavedJobs: Job[] = route.params.savedJobs;
   const [savedJobs, setSavedJobs] = useState<Job[]>(initialSavedJobs);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [jobToRemove, setJobToRemove] = useState<Job | null>(null);
 
-  const handleRemoveJob = (job: Job) => {
-    Alert.alert('Remove Job', 'Are you sure you want to remove this job?', [
-      { text: 'Cancel' },
-      {
-        text: 'Yes',
-        onPress: () => setSavedJobs((prev) => prev.filter((j) => j.id !== job.id)),
-      },
-    ]);
+  const confirmRemoveJob = (job: Job) => {
+    setJobToRemove(job);
+    setModalVisible(true);
+  };
+
+  const handleRemoveConfirmed = () => {
+    if (jobToRemove) {
+      setSavedJobs((prev) => prev.filter((j) => j.id !== jobToRemove.id));
+    }
+    setModalVisible(false);
+    setJobToRemove(null);
+  };
+
+  const handleCancelRemove = () => {
+    setModalVisible(false);
+    setJobToRemove(null);
   };
 
   const handleApply = (job: Job) => {
@@ -36,18 +47,18 @@ const SavedJobsScreen: React.FC<Props> = ({ navigation, route }) => {
             job={item}
             onSave={() => {}}
             onApply={handleApply}
-            onRemove={handleRemoveJob} // <-- Pass the removal callback
+            onRemove={() => confirmRemoveJob(item)}
             saved={true}
           />
         )}
       />
-      {/* You can remove this extra button if you only want to remove via the card */}
-      {/* <Button
-        title="Remove Selected Job"
-        onPress={() => {
-          Alert.alert('Remove a job by pressing its remove button on the card.');
-        }}
-      /> */}
+      <ConfirmModal
+        visible={modalVisible}
+        title="Remove Job"
+        message="Are you sure you want to remove this job?"
+        onConfirm={handleRemoveConfirmed}
+        onCancel={handleCancelRemove}
+      />
     </View>
   );
 };

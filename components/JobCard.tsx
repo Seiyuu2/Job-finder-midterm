@@ -5,9 +5,9 @@ import { Job } from '../api/jobApi';
 
 type JobCardProps = {
   job: Job;
-  onSave?: (job: Job) => void;   // Mark these as optional if you like
+  onSave?: (job: Job) => void;
   onApply?: (job: Job) => void;
-  onRemove?: (job: Job) => void; // NEW prop for removal
+  onRemove?: (job: Job) => void;
   saved?: boolean;
 };
 
@@ -24,9 +24,7 @@ const JobCard: React.FC<JobCardProps> = ({
       <Text style={styles.company}>{job.companyName}</Text>
       {job.salary && <Text style={styles.salary}>{job.salary}</Text>}
       {job.description && <Text style={styles.description}>{job.description}</Text>}
-
       <View style={styles.buttonContainer}>
-        {/* Save Button */}
         {onSave && (
           <TouchableOpacity
             style={[styles.button, saved && styles.savedButton]}
@@ -36,20 +34,13 @@ const JobCard: React.FC<JobCardProps> = ({
             <Text style={styles.buttonText}>{saved ? 'Saved' : 'Save Job'}</Text>
           </TouchableOpacity>
         )}
-
-        {/* Apply Button */}
         {onApply && (
           <TouchableOpacity style={styles.button} onPress={() => onApply(job)}>
             <Text style={styles.buttonText}>Apply</Text>
           </TouchableOpacity>
         )}
-
-        {/* Remove Button */}
         {onRemove && (
-          <TouchableOpacity
-            style={[styles.button, styles.removeButton]}
-            onPress={() => onRemove(job)}
-          >
+          <TouchableOpacity style={[styles.button, styles.removeButton]} onPress={() => onRemove(job)}>
             <Text style={styles.buttonText}>Remove</Text>
           </TouchableOpacity>
         )}
