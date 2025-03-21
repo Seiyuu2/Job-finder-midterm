@@ -5,54 +5,29 @@ import { Job } from '../api/jobApi';
 
 type JobCardProps = {
   job: Job;
-  onSave?: (job: Job) => void;
-  onApply?: (job: Job) => void;
-  onRemove?: (job: Job) => void; // <- NEW
-  saved?: boolean;
+  onSave: (job: Job) => void;
+  onApply: (job: Job) => void;
+  saved: boolean;
 };
 
-const JobCard: React.FC<JobCardProps> = ({
-  job,
-  onSave,
-  onApply,
-  onRemove,
-  saved = false,
-}) => {
+const JobCard: React.FC<JobCardProps> = ({ job, onSave, onApply, saved }) => {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{job.title}</Text>
       <Text style={styles.company}>{job.companyName}</Text>
       {job.salary && <Text style={styles.salary}>{job.salary}</Text>}
       {job.description && <Text style={styles.description}>{job.description}</Text>}
-
       <View style={styles.buttonContainer}>
-        {/* If onSave is provided, show a Save or Saved button */}
-        {onSave && (
-          <TouchableOpacity
-            style={[styles.button, saved && styles.savedButton]}
-            onPress={() => onSave(job)}
-            disabled={saved}
-          >
-            <Text style={styles.buttonText}>{saved ? 'Saved' : 'Save Job'}</Text>
-          </TouchableOpacity>
-        )}
-
-        {/* If onApply is provided, show an Apply button */}
-        {onApply && (
-          <TouchableOpacity style={styles.button} onPress={() => onApply(job)}>
-            <Text style={styles.buttonText}>Apply</Text>
-          </TouchableOpacity>
-        )}
-
-        {/* If onRemove is provided, show a Remove button */}
-        {onRemove && (
-          <TouchableOpacity
-            style={[styles.button, styles.removeButton]}
-            onPress={() => onRemove(job)}
-          >
-            <Text style={styles.buttonText}>Remove</Text>
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          style={[styles.button, saved && styles.savedButton]}
+          onPress={() => onSave(job)}
+          disabled={saved}
+        >
+          <Text style={styles.buttonText}>{saved ? 'Saved' : 'Save Job'}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => onApply(job)}>
+          <Text style={styles.buttonText}>Apply</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -86,21 +61,18 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     marginTop: 10,
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
   },
   button: {
     backgroundColor: '#007bff',
     padding: 10,
     borderRadius: 5,
-    marginRight: 8,
+    flex: 1,
+    marginHorizontal: 5,
     alignItems: 'center',
-    minWidth: 80,
   },
   savedButton: {
     backgroundColor: '#28a745',
-  },
-  removeButton: {
-    backgroundColor: '#dc3545',
   },
   buttonText: {
     color: '#FFF',
