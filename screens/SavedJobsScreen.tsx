@@ -1,6 +1,6 @@
 // src/screens/SavedJobsScreen.tsx
 import React, { useState } from 'react';
-import { View, FlatList, Button, StyleSheet, Alert } from 'react-native';
+import { View, FlatList, StyleSheet, Alert } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { Job } from '../api/jobApi';
@@ -9,12 +9,9 @@ import JobCard from '../components/JobCard';
 type Props = NativeStackScreenProps<RootStackParamList, 'SavedJobsScreen'>;
 
 const SavedJobsScreen: React.FC<Props> = ({ navigation, route }) => {
-  // The route now has savedJobs as defined in RootStackParamList
   const initialSavedJobs: Job[] = route.params.savedJobs;
   const [savedJobs, setSavedJobs] = useState<Job[]>(initialSavedJobs);
 
-  // Optionally, if you want to implement removal functionality,
-  // you can integrate handleRemoveJob with a button on the JobCard.
   const handleRemoveJob = (job: Job) => {
     Alert.alert('Remove Job', 'Are you sure you want to remove this job?', [
       { text: 'Cancel' },
@@ -39,13 +36,18 @@ const SavedJobsScreen: React.FC<Props> = ({ navigation, route }) => {
             job={item}
             onSave={() => {}}
             onApply={handleApply}
+            onRemove={handleRemoveJob} // <-- Pass the removal callback
             saved={true}
           />
         )}
       />
-      <Button title="Remove Selected Job" onPress={() => {
-        Alert.alert('Remove a job by pressing its remove button on the card.');
-      }} />
+      {/* You can remove this extra button if you only want to remove via the card */}
+      {/* <Button
+        title="Remove Selected Job"
+        onPress={() => {
+          Alert.alert('Remove a job by pressing its remove button on the card.');
+        }}
+      /> */}
     </View>
   );
 };
