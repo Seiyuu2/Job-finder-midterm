@@ -7,7 +7,7 @@ export type Job = {
   companyName: string;
   salary?: string;
   description?: string;
-  // add other properties as needed
+
 };
 
 export const fetchJobs = async (): Promise<Job[]> => {

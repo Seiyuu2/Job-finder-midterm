@@ -1,4 +1,4 @@
-// src/api/jobApi.ts
+
 import { v4 as uuidv4 } from 'uuid';
 
 export type Job = {
@@ -7,7 +7,7 @@ export type Job = {
   companyName: string;
   salary?: string;
   description?: string;
-  // add other properties as needed
+
 };
 
 export const fetchJobs = async (): Promise<Job[]> => {
