@@ -1,17 +1,17 @@
 // src/screens/SavedJobsScreen.tsx
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import { Job } from '../api/jobApi';
+import { SavedJobsContext } from '../context/SavedJobsContext';
 import JobCard from '../components/JobCard';
 import ConfirmModal from '../components/ConfirmModal';
+import { Job } from '../api/jobApi';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SavedJobsScreen'>;
 
-const SavedJobsScreen: React.FC<Props> = ({ navigation, route }) => {
-  const initialSavedJobs: Job[] = route.params.savedJobs;
-  const [savedJobs, setSavedJobs] = useState<Job[]>(initialSavedJobs);
+const SavedJobsScreen: React.FC<Props> = ({ navigation }) => {
+  const { savedJobs, removeJob } = useContext(SavedJobsContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [jobToRemove, setJobToRemove] = useState<Job | null>(null);
 
@@ -22,7 +22,7 @@ const SavedJobsScreen: React.FC<Props> = ({ navigation, route }) => {
 
   const handleRemoveConfirmed = () => {
     if (jobToRemove) {
-      setSavedJobs((prev) => prev.filter((j) => j.id !== jobToRemove.id));
+      removeJob(jobToRemove.id);
     }
     setModalVisible(false);
     setJobToRemove(null);

@@ -8,10 +8,10 @@ import ApplicationFormScreen from '../screens/ApplicationFormScreen';
 import { ThemeContext } from '../context/ThemeContext';
 
 export type RootStackParamList = {
-    JobFinderScreen: undefined;
-    SavedJobsScreen: { savedJobs: Job[] }; // Now accepts savedJobs
-    ApplicationFormScreen: { job?: any; fromSaved?: boolean } | undefined;
-  };
+  JobFinderScreen: undefined;
+  SavedJobsScreen: undefined; // updated: no parameter needed now
+  ApplicationFormScreen: { job?: any; fromSaved?: boolean } | undefined;
+};
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -31,8 +31,16 @@ const AppNavigator = () => {
             ),
           }}
         />
-        <Stack.Screen name="SavedJobsScreen" component={SavedJobsScreen} options={{ title: 'Saved Jobs' }} />
-        <Stack.Screen name="ApplicationFormScreen" component={ApplicationFormScreen} options={{ title: 'Apply' }} />
+        <Stack.Screen
+          name="SavedJobsScreen"
+          component={SavedJobsScreen}
+          options={{ title: 'Saved Jobs' }}
+        />
+        <Stack.Screen
+          name="ApplicationFormScreen"
+          component={ApplicationFormScreen}
+          options={{ title: 'Apply' }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -46,7 +54,9 @@ type HeaderProps = {
 
 const HeaderThemeToggle: React.FC<HeaderProps> = ({ toggleTheme, isDarkMode }) => (
   <TouchableOpacity onPress={toggleTheme} style={{ marginRight: 10 }}>
-    <Text style={{ color: isDarkMode ? '#FFF' : '#007bff' }}>{isDarkMode ? 'Light Mode' : 'Dark Mode'}</Text>
+    <Text style={{ color: isDarkMode ? '#FFF' : '#007bff' }}>
+      {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+    </Text>
   </TouchableOpacity>
 );
 
