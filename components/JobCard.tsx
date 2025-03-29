@@ -35,7 +35,7 @@ const JobCard: React.FC<JobCardProps> = ({
   const [showDescription, setShowDescription] = useState(false);
 
   const toggleDescription = () => {
-    setShowDescription((prev) => !prev);
+    setShowDescription(prev => !prev);
   };
 
   const salaryString = getSalaryString(job);
@@ -53,49 +53,64 @@ const JobCard: React.FC<JobCardProps> = ({
         </View>
       </View>
 
-      {/* Key Information Chips */}
-      <View style={styles.keyInfoRow}>
-        {salaryString !== "" && (
-          <View style={styles.infoChip}>
-            <Text style={styles.infoChipText}>{salaryString}</Text>
-          </View>
-        )}
-        {job.jobType ? (
-          <View style={styles.infoChip}>
-            <Text style={styles.infoChipText}>{job.jobType}</Text>
-          </View>
+      {/* Details Section */}
+      <View style={styles.detailsSection}>
+        {job.seniorityLevel ? (
+          <Text style={styles.detailText}>
+            <Text style={styles.detailLabel}>Seniority Level: </Text>
+            {job.seniorityLevel}
+          </Text>
         ) : null}
         {job.workModel ? (
-          <View style={styles.infoChip}>
-            <Text style={styles.infoChipText}>{job.workModel}</Text>
-          </View>
+          <Text style={styles.detailText}>
+            <Text style={styles.detailLabel}>Work Model: </Text>
+            {job.workModel}
+          </Text>
         ) : null}
-        {job.seniorityLevel ? (
-          <View style={styles.infoChip}>
-            <Text style={styles.infoChipText}>{job.seniorityLevel}</Text>
-          </View>
+        {job.jobType ? (
+          <Text style={styles.detailText}>
+            <Text style={styles.detailLabel}>Job Type: </Text>
+            {job.jobType}
+          </Text>
         ) : null}
+        {(job.minSalary || job.maxSalary || job.salary) && (
+          <>
+            <Text style={styles.detailText}>
+              <Text style={styles.detailLabel}>Starting Salary: </Text>
+              {job.minSalary ? `$${job.minSalary}` : 'N/A'}
+            </Text>
+            {job.maxSalary ? (
+              <Text style={styles.detailText}>
+                <Text style={styles.detailLabel}>Salary Cap: </Text>
+                {`$${job.maxSalary}`}
+              </Text>
+            ) : null}
+          </>
+        )}
       </View>
 
-      {/* Location Chips */}
+      {/* Location Section */}
       {job.locations && job.locations.length > 0 && (
-        <View style={styles.locationsContainer}>
-          {job.locations.map((loc, index) => (
-            <View key={index.toString()} style={styles.locationChip}>
-              <Text style={styles.locationText}>{loc}</Text>
-            </View>
-          ))}
+        <View style={styles.section}>
+          <Text style={styles.sectionLabel}>Location:</Text>
+          <View style={styles.chipsContainer}>
+            {job.locations.map((loc, index) => (
+              <View key={index.toString()} style={styles.chip}>
+                <Text style={styles.chipText}>{loc}</Text>
+              </View>
+            ))}
+          </View>
         </View>
       )}
 
-      {/* TAGS Section */}
+      {/* Tags Section */}
       {job.tags && job.tags.length > 0 && (
-        <View style={styles.tagsContainer}>
-          <Text style={styles.tagsLabel}>TAGS:</Text>
-          <View style={styles.tagsWrapper}>
+        <View style={styles.section}>
+          <Text style={styles.sectionLabel}>TAGS:</Text>
+          <View style={styles.chipsContainer}>
             {job.tags.map((tag, index) => (
-              <View key={index.toString()} style={styles.tagChip}>
-                <Text style={styles.tagText}>{tag}</Text>
+              <View key={index.toString()} style={styles.chip}>
+                <Text style={styles.chipText}>{tag}</Text>
               </View>
             ))}
           </View>
@@ -106,18 +121,12 @@ const JobCard: React.FC<JobCardProps> = ({
       {showDescription ? (
         <>
           <HTMLDescription htmlContent={job.description || ''} />
-          <TouchableOpacity
-            style={[styles.button, styles.toggleButton]}
-            onPress={toggleDescription}
-          >
+          <TouchableOpacity style={[styles.button, styles.toggleButton]} onPress={toggleDescription}>
             <Text style={styles.buttonText}>Hide Details</Text>
           </TouchableOpacity>
         </>
       ) : (
-        <TouchableOpacity
-          style={[styles.button, styles.toggleButton]}
-          onPress={toggleDescription}
-        >
+        <TouchableOpacity style={[styles.button, styles.toggleButton]} onPress={toggleDescription}>
           <Text style={styles.buttonText}>View More Details</Text>
         </TouchableOpacity>
       )}
@@ -130,16 +139,11 @@ const JobCard: React.FC<JobCardProps> = ({
             onPress={() => onSave(job)}
             disabled={saved}
           >
-            <Text style={styles.actionButtonText}>
-              {saved ? 'Saved' : 'Save Job'}
-            </Text>
+            <Text style={styles.actionButtonText}>{saved ? 'Saved' : 'Save Job'}</Text>
           </TouchableOpacity>
         )}
         {onApply && (
-          <TouchableOpacity
-            style={styles.actionButton}
-            onPress={() => onApply(job)}
-          >
+          <TouchableOpacity style={styles.actionButton} onPress={() => onApply(job)}>
             <Text style={styles.actionButtonText}>Apply</Text>
           </TouchableOpacity>
         )}
@@ -189,12 +193,30 @@ const styles = StyleSheet.create({
     color: '#555',
     marginTop: 2,
   },
-  keyInfoRow: {
+  detailsSection: {
+    marginVertical: 6,
+  },
+  detailText: {
+    fontSize: 12,
+    color: '#333',
+    marginVertical: 2,
+  },
+  detailLabel: {
+    fontWeight: 'bold',
+  },
+  section: {
+    marginVertical: 6,
+  },
+  sectionLabel: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  chipsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginVertical: 4,
   },
-  infoChip: {
+  chip: {
     backgroundColor: '#e0e0e0',
     borderRadius: 12,
     paddingHorizontal: 10,
@@ -202,48 +224,7 @@ const styles = StyleSheet.create({
     marginRight: 6,
     marginBottom: 6,
   },
-  infoChipText: {
-    fontSize: 12,
-    color: '#333',
-  },
-  locationsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginVertical: 6,
-  },
-  locationChip: {
-    backgroundColor: '#d4edda',
-    borderRadius: 12,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    marginRight: 6,
-    marginBottom: 6,
-  },
-  locationText: {
-    fontSize: 12,
-    color: '#155724',
-  },
-  tagsContainer: {
-    marginVertical: 6,
-  },
-  tagsLabel: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    marginBottom: 4,
-  },
-  tagsWrapper: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  tagChip: {
-    backgroundColor: '#f0f0f0',
-    borderRadius: 12,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    marginRight: 6,
-    marginBottom: 6,
-  },
-  tagText: {
+  chipText: {
     fontSize: 12,
     color: '#333',
   },
