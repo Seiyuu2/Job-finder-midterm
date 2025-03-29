@@ -1,7 +1,7 @@
 // src/components/JobCard.tsx
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Job } from '../api/jobApi(HARDCODEDTESTDATA)';
+import { Job } from '../api/jobApi';
 
 type JobCardProps = {
   job: Job;

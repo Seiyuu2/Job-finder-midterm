@@ -1,5 +1,5 @@
 import React, { createContext, useState, ReactNode } from 'react';
-import { Job } from '../api/jobApi(HARDCODEDTESTDATA)';
+import { Job } from '../api/jobApi';
 
 type SavedJobsContextType = {
   savedJobs: Job[];
