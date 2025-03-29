@@ -23,24 +23,15 @@ const JobCard: React.FC<JobCardProps> = ({
     <View style={styles.card}>
       <Text style={styles.title}>{job.title}</Text>
       <Text style={styles.company}>{job.companyName}</Text>
+
+      {/* If there's a salary, you can show it here */}
       {job.salary && <Text style={styles.salary}>{job.salary}</Text>}
-      
-      {/* Render HTML description with custom formatting */}
+
+      {/* RENDER HTML */}
       {job.description ? (
         <HTMLDescription htmlContent={job.description} />
       ) : (
-        <Text style={styles.description}>No description available</Text>
-      )}
-
-      {/* Render tags if available */}
-      {job.tags && job.tags.length > 0 && (
-        <View style={styles.tagsContainer}>
-          {job.tags.map((tag, index) => (
-            <View key={index} style={styles.tagChip}>
-              <Text style={styles.tagText}>{tag}</Text>
-            </View>
-          ))}
-        </View>
+        <Text style={styles.description}>No description</Text>
       )}
 
       <View style={styles.buttonContainer}>
@@ -50,7 +41,9 @@ const JobCard: React.FC<JobCardProps> = ({
             onPress={() => onSave(job)}
             disabled={saved}
           >
-            <Text style={styles.buttonText}>{saved ? 'Saved' : 'Save Job'}</Text>
+            <Text style={styles.buttonText}>
+              {saved ? 'Saved' : 'Save Job'}
+            </Text>
           </TouchableOpacity>
         )}
         {onApply && (
@@ -91,28 +84,11 @@ const styles = StyleSheet.create({
   salary: {
     fontSize: 14,
     color: '#777',
-    marginVertical: 4,
+    marginBottom: 8,
   },
   description: {
     fontSize: 14,
     marginVertical: 5,
-  },
-  tagsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginVertical: 8,
-  },
-  tagChip: {
-    backgroundColor: '#e0e0e0',
-    borderRadius: 15,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    marginRight: 6,
-    marginBottom: 6,
-  },
-  tagText: {
-    fontSize: 12,
-    color: '#333',
   },
   buttonContainer: {
     flexDirection: 'row',
