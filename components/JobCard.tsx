@@ -37,7 +37,6 @@ const JobCard: React.FC<JobCardProps> = ({
   const { isDarkMode } = useContext(ThemeContext);
 
   const toggleDescription = () => setShowDescription(prev => !prev);
-
   const salaryString = getSalaryString(job);
 
   return (
@@ -49,7 +48,9 @@ const JobCard: React.FC<JobCardProps> = ({
         ) : null}
         <View style={styles.headerText}>
           <Text style={[styles.title, isDarkMode && styles.titleDark]}>{job.title}</Text>
-          <Text style={[styles.company, isDarkMode && styles.companyDark]}>{job.companyName}</Text>
+          <Text style={[styles.company, isDarkMode && styles.companyDark]}>
+            {job.companyName}
+          </Text>
         </View>
       </View>
 
@@ -107,7 +108,7 @@ const JobCard: React.FC<JobCardProps> = ({
         </View>
       )}
 
-      {/* Tags Section with extra margin at bottom */}
+      {/* Tags Section */}
       {job.tags && job.tags.length > 0 && (
         <View style={[styles.section, { marginBottom: 10 }]}>
           <Text style={[styles.sectionLabel, isDarkMode && styles.sectionLabelDark]}>
@@ -124,6 +125,9 @@ const JobCard: React.FC<JobCardProps> = ({
           </View>
         </View>
       )}
+
+      {/* Divider */}
+      <View style={styles.divider} />
 
       {/* Toggle Full Description */}
       {showDescription ? (
@@ -202,7 +206,6 @@ const styles = StyleSheet.create({
   cardDark: {
     backgroundColor: '#1c1c1c',
   },
-
   // Header
   header: {
     flexDirection: 'row',
@@ -233,7 +236,6 @@ const styles = StyleSheet.create({
   companyDark: {
     color: '#CCC',
   },
-
   // Details Section
   detailsSection: {
     marginVertical: 6,
@@ -249,7 +251,6 @@ const styles = StyleSheet.create({
   detailLabel: {
     fontWeight: 'bold',
   },
-
   // Sections (Location, Tags)
   section: {
     marginVertical: 6,
@@ -285,10 +286,15 @@ const styles = StyleSheet.create({
   chipTextDark: {
     color: '#000', // black text in dark mode
   },
-
-  // Toggle / Action Button (for details toggle and Save/Apply/Remove)
+  // Divider
+  divider: {
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    marginVertical: 10,
+  },
+  // Toggle / Action Button
   actionButton: {
-    backgroundColor: '#007bff', // default blue in light mode
+    backgroundColor: '#007bff', // default blue button in light mode
     padding: 10,
     borderRadius: 5,
     marginRight: 8,
@@ -306,12 +312,10 @@ const styles = StyleSheet.create({
     color: '#000', // black text in dark mode
     fontSize: 14,
   },
-
   // Toggle Button (reuse actionButton style)
   toggleButton: {
     alignSelf: 'flex-start',
   },
-
   // Action Row
   actionRow: {
     flexDirection: 'row',
