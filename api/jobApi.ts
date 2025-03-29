@@ -1,5 +1,5 @@
-// NON POSTMAN HARDCODED TEST STUFF
-import { v4 as uuidv4 } from 'uuid';
+// src/api/jobApi.ts
+import uuid from 'react-native-uuid';
 
 export type Job = {
   id: string;
@@ -7,25 +7,31 @@ export type Job = {
   companyName: string;
   salary?: string;
   description?: string;
-
+  // You can add additional properties here if needed
 };
 
 export const fetchJobs = async (): Promise<Job[]> => {
-  // Hardcoded test data
-  return [
-    {
-      id: uuidv4(),
-      title: 'Test Job Title',
-      companyName: 'Test Company',
-      salary: '$50,000',
-      description: 'This is a test job description for verifying the UI.',
-    },
-    {
-      id: uuidv4(),
-      title: 'Sample Developer',
-      companyName: 'Sample Inc.',
-      salary: '$60,000',
-      description: 'Looking for a skilled developer with expertise in React Native.',
-    },
-  ];
+  try {
+    const response = await fetch('https://empllo.com/api/v1');
+    const data = await response.json();
+    console.log('Fetched data:', data);
+
+    // Check if data is an array or if jobs are in data.jobs
+    const jobsArray = Array.isArray(data) ? data : data.jobs;
+    if (!jobsArray) {
+      throw new Error("No jobs array found in the response");
+    }
+    
+    return jobsArray.map((job: any) => ({
+      id: job.id ? job.id.toString() : uuid.v4(),
+      title: job.title || "",
+      companyName: job.companyName || "",
+      salary: job.salary || "",
+      description: job.description || "",
+      // Map other fields if necessary...
+    }));
+  } catch (error) {
+    console.error('Error fetching jobs:', error);
+    return [];
+  }
 };

@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { View, FlatList, ActivityIndicator, Button, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import { fetchJobs, Job } from '../api/jobApi';
+import { fetchJobs, Job } from '../api/jobApi(HARDCODEDTESTDATA)';
 import JobCard from '../components/JobCard';
 import SearchBar from '../components/SearchBar';
 import { SavedJobsContext } from '../context/SavedJobsContext';

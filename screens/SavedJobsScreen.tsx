@@ -6,7 +6,7 @@ import { RootStackParamList } from '../navigation/AppNavigator';
 import { SavedJobsContext } from '../context/SavedJobsContext';
 import JobCard from '../components/JobCard';
 import ConfirmModal from '../components/ConfirmModal';
-import { Job } from '../api/jobApi';
+import { Job } from '../api/jobApi(HARDCODEDTESTDATA)';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'SavedJobsScreen'>;
 
