@@ -7,8 +7,14 @@ export type Job = {
   companyName: string;
   salary?: string;
   description?: string;
-  tags?: string[]; // Added tags field
+  tags?: string[];
+  locations?: string[];
+  seniorityLevel?: string;
+  workModel?: string;
+  jobType?: string;
+  companyLogo?: string;  // Add this line
 };
+
 
 export const fetchJobs = async (): Promise<Job[]> => {
   try {
@@ -29,6 +35,10 @@ export const fetchJobs = async (): Promise<Job[]> => {
       salary: job.salary || "",
       description: job.description || "",
       tags: Array.isArray(job.tags) ? job.tags : [],
+      locations: Array.isArray(job.locations) ? job.locations : [],
+      seniorityLevel: job.seniorityLevel || "",
+      workModel: job.workModel || "",
+      jobType: job.jobType || "",
     }));
   } catch (error) {
     console.error('Error fetching jobs:', error);
