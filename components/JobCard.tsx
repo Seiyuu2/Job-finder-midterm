@@ -2,6 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Job } from '../api/jobApi';
+import HTMLDescription from '../components/HTMLDescription';
 
 type JobCardProps = {
   job: Job;
@@ -23,7 +24,11 @@ const JobCard: React.FC<JobCardProps> = ({
       <Text style={styles.title}>{job.title}</Text>
       <Text style={styles.company}>{job.companyName}</Text>
       {job.salary && <Text style={styles.salary}>{job.salary}</Text>}
-      {job.description && <Text style={styles.description}>{job.description}</Text>}
+      {job.description ? (
+        <HTMLDescription htmlContent={job.description} />
+      ) : (
+        <Text style={styles.description}>No description available</Text>
+      )}
       <View style={styles.buttonContainer}>
         {onSave && (
           <TouchableOpacity
@@ -40,7 +45,10 @@ const JobCard: React.FC<JobCardProps> = ({
           </TouchableOpacity>
         )}
         {onRemove && (
-          <TouchableOpacity style={[styles.button, styles.removeButton]} onPress={() => onRemove(job)}>
+          <TouchableOpacity
+            style={[styles.button, styles.removeButton]}
+            onPress={() => onRemove(job)}
+          >
             <Text style={styles.buttonText}>Remove</Text>
           </TouchableOpacity>
         )}
