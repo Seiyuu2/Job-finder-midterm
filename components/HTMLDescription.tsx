@@ -10,16 +10,34 @@ type HTMLDescriptionProps = {
 const HTMLDescription: React.FC<HTMLDescriptionProps> = ({ htmlContent }) => {
   const { width } = useWindowDimensions();
 
-  // Replace occurrences of &gt; (plus optional space) with a bullet (•)
-  const cleanedHtml = htmlContent.replace(/&gt;\s?/g, '• ');
+  // Remove line breaks from the raw HTML (optional)
+  const cleanedHtml = htmlContent.replace(/(\r\n|\n|\r)/gm, ' ');
 
   return (
     <RenderHTML
       contentWidth={width}
       source={{ html: cleanedHtml }}
       tagsStyles={{
-        p: { marginVertical: 4, fontSize: 14, lineHeight: 20 },
-        li: { marginLeft: 20, marginVertical: 2, fontSize: 14, lineHeight: 20 },
+        // Make <p> more compact
+        p: {
+          marginVertical: 2, // reduce top/bottom spacing
+          padding: 0,
+          fontSize: 14,
+          lineHeight: 18, // slightly tighter line spacing
+        },
+        // If you have <li> tags, do the same
+        li: {
+          marginVertical: 2,
+          padding: 0,
+          fontSize: 14,
+          lineHeight: 18,
+        },
+        // If you see extra <span> tags, reduce their margins
+        span: {
+          marginVertical: 0,
+          padding: 0,
+          fontSize: 14,
+        },
       }}
     />
   );
