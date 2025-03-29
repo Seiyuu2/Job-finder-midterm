@@ -39,22 +39,9 @@ const JobCard: React.FC<JobCardProps> = ({
   const toggleDescription = () => setShowDescription(prev => !prev);
   const salaryString = getSalaryString(job);
 
-  // Toggle Save: if already saved, call onRemove; otherwise, call onSave.
-  const handleToggleSave = () => {
-    if (saved) {
-      if (onRemove) {
-        onRemove(job);
-      }
-    } else {
-      if (onSave) {
-        onSave(job);
-      }
-    }
-  };
-
   return (
     <View style={[styles.card, isDarkMode && styles.cardDark]}>
-      {/* Header: Logo, Title, Company */}
+      {/* Header with logo, title, and company */}
       <View style={styles.header}>
         {job.companyLogo ? (
           <Image source={{ uri: job.companyLogo }} style={styles.logo} />
@@ -139,7 +126,7 @@ const JobCard: React.FC<JobCardProps> = ({
         </View>
       )}
 
-      {/* Divider for visual separation */}
+      {/* Divider to separate tags and details toggle */}
       <View style={styles.divider} />
 
       {/* Toggle Full Description */}
@@ -179,12 +166,16 @@ const JobCard: React.FC<JobCardProps> = ({
                     ? [styles.actionButton, styles.actionButtonDark]
                     : [styles.actionButton])
             }
-            onPress={handleToggleSave}
+            onPress={() => onSave(job)}
+            disabled={saved}
           >
-            <Text style={
-              isDarkMode
-                ? [styles.actionButtonText, styles.actionButtonTextDark]
-                : styles.actionButtonText
+            <Text style={saved 
+                ? (isDarkMode
+                    ? [styles.actionButtonText, styles.actionButtonTextDark]
+                    : styles.actionButtonText)
+                : (isDarkMode
+                    ? [styles.actionButtonText, styles.actionButtonTextDark]
+                    : styles.actionButtonText)
             }>
               {saved ? 'Saved' : 'Save Job'}
             </Text>
@@ -195,11 +186,7 @@ const JobCard: React.FC<JobCardProps> = ({
             style={isDarkMode ? [styles.actionButton, styles.actionButtonDark] : [styles.actionButton]}
             onPress={() => onApply(job)}
           >
-            <Text style={
-              isDarkMode
-                ? [styles.actionButtonText, styles.actionButtonTextDark]
-                : styles.actionButtonText
-            }>
+            <Text style={isDarkMode ? [styles.actionButtonText, styles.actionButtonTextDark] : styles.actionButtonText}>
               Apply
             </Text>
           </TouchableOpacity>
@@ -209,11 +196,7 @@ const JobCard: React.FC<JobCardProps> = ({
             style={isDarkMode ? [styles.actionButton, styles.actionButtonDark] : [styles.actionButton]}
             onPress={() => onRemove(job)}
           >
-            <Text style={
-              isDarkMode
-                ? [styles.actionButtonText, styles.actionButtonTextDark]
-                : styles.actionButtonText
-            }>
+            <Text style={isDarkMode ? [styles.actionButtonText, styles.actionButtonTextDark] : styles.actionButtonText}>
               Remove
             </Text>
           </TouchableOpacity>
@@ -238,6 +221,7 @@ const styles = StyleSheet.create({
   cardDark: {
     backgroundColor: '#1c1c1c',
   },
+
   // Header
   header: {
     flexDirection: 'row',
@@ -268,6 +252,7 @@ const styles = StyleSheet.create({
   companyDark: {
     color: '#CCC',
   },
+
   // Details Section
   detailsSection: {
     marginVertical: 6,
@@ -283,6 +268,7 @@ const styles = StyleSheet.create({
   detailLabel: {
     fontWeight: 'bold',
   },
+
   // Sections (Location, Tags)
   section: {
     marginVertical: 6,
@@ -301,7 +287,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   chip: {
-    backgroundColor: '#e0e0e0', // default chip in light mode
+    backgroundColor: '#e0e0e0', // light mode chip
     borderRadius: 12,
     paddingHorizontal: 10,
     paddingVertical: 4,
@@ -318,13 +304,15 @@ const styles = StyleSheet.create({
   chipTextDark: {
     color: '#000', // black text in dark mode
   },
-  // Divider between tags and details toggle
+
+  // Divider between tags and toggle button
   divider: {
     borderBottomColor: '#ccc',
     borderBottomWidth: 1,
-    marginVertical: 20,
+    marginVertical: 15, // increased margin for clearer separation
   },
-  // Toggle / Action Button (for details toggle and action buttons)
+
+  // Action Button (Toggle and Action Buttons)
   actionButton: {
     backgroundColor: '#007bff', // blue in light mode
     padding: 10,
@@ -350,10 +338,12 @@ const styles = StyleSheet.create({
   savedButtonDark: {
     backgroundColor: '#FFA500', // orange in dark mode when saved
   },
+
   // Toggle Button (reuse actionButton style)
   toggleButton: {
     alignSelf: 'flex-start',
   },
+
   // Action Row
   actionRow: {
     flexDirection: 'row',
