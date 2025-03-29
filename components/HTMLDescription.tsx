@@ -10,31 +10,17 @@ type HTMLDescriptionProps = {
 const HTMLDescription: React.FC<HTMLDescriptionProps> = ({ htmlContent }) => {
   const { width } = useWindowDimensions();
 
-  // Define custom styles for HTML tags
-  const tagsStyles = {
-    p: {
-      marginVertical: 4,
-      fontSize: 14,
-      lineHeight: 20,
-    },
-    li: {
-      marginLeft: 20,
-      marginVertical: 2,
-      fontSize: 14,
-      lineHeight: 20,
-    },
-    span: {
-      marginVertical: 2,
-      fontSize: 14,
-    },
-    // You can add more tag customizations here if needed
-  };
+  // Replace occurrences of &gt; (plus optional space) with a bullet (•)
+  const cleanedHtml = htmlContent.replace(/&gt;\s?/g, '• ');
 
   return (
     <RenderHTML
       contentWidth={width}
-      source={{ html: htmlContent || '' }}
-      tagsStyles={tagsStyles}
+      source={{ html: cleanedHtml }}
+      tagsStyles={{
+        p: { marginVertical: 4, fontSize: 14, lineHeight: 20 },
+        li: { marginLeft: 20, marginVertical: 2, fontSize: 14, lineHeight: 20 },
+      }}
     />
   );
 };
