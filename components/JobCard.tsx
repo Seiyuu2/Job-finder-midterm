@@ -88,16 +88,36 @@ const JobCard: React.FC<JobCardProps> = ({
         </View>
       )}
 
+      {/* TAGS Section */}
+      {job.tags && job.tags.length > 0 && (
+        <View style={styles.tagsContainer}>
+          <Text style={styles.tagsLabel}>TAGS:</Text>
+          <View style={styles.tagsWrapper}>
+            {job.tags.map((tag, index) => (
+              <View key={index.toString()} style={styles.tagChip}>
+                <Text style={styles.tagText}>{tag}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      )}
+
       {/* Toggle Full Description */}
       {showDescription ? (
         <>
           <HTMLDescription htmlContent={job.description || ''} />
-          <TouchableOpacity style={[styles.button, styles.toggleButton]} onPress={toggleDescription}>
+          <TouchableOpacity
+            style={[styles.button, styles.toggleButton]}
+            onPress={toggleDescription}
+          >
             <Text style={styles.buttonText}>Hide Details</Text>
           </TouchableOpacity>
         </>
       ) : (
-        <TouchableOpacity style={[styles.button, styles.toggleButton]} onPress={toggleDescription}>
+        <TouchableOpacity
+          style={[styles.button, styles.toggleButton]}
+          onPress={toggleDescription}
+        >
           <Text style={styles.buttonText}>View More Details</Text>
         </TouchableOpacity>
       )}
@@ -110,11 +130,16 @@ const JobCard: React.FC<JobCardProps> = ({
             onPress={() => onSave(job)}
             disabled={saved}
           >
-            <Text style={styles.actionButtonText}>{saved ? 'Saved' : 'Save Job'}</Text>
+            <Text style={styles.actionButtonText}>
+              {saved ? 'Saved' : 'Save Job'}
+            </Text>
           </TouchableOpacity>
         )}
         {onApply && (
-          <TouchableOpacity style={styles.actionButton} onPress={() => onApply(job)}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => onApply(job)}
+          >
             <Text style={styles.actionButtonText}>Apply</Text>
           </TouchableOpacity>
         )}
@@ -197,6 +222,30 @@ const styles = StyleSheet.create({
   locationText: {
     fontSize: 12,
     color: '#155724',
+  },
+  tagsContainer: {
+    marginVertical: 6,
+  },
+  tagsLabel: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  tagsWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  tagChip: {
+    backgroundColor: '#f0f0f0',
+    borderRadius: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    marginRight: 6,
+    marginBottom: 6,
+  },
+  tagText: {
+    fontSize: 12,
+    color: '#333',
   },
   button: {
     backgroundColor: '#007bff',
