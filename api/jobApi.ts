@@ -13,6 +13,8 @@ export type Job = {
   workModel?: string;
   jobType?: string;
   companyLogo?: string;
+  minSalary?: number;
+  maxSalary?: number;
 };
 
 export const fetchJobs = async (): Promise<Job[]> => {
@@ -39,6 +41,8 @@ export const fetchJobs = async (): Promise<Job[]> => {
       workModel: job.workModel || "",
       jobType: job.jobType || "",
       companyLogo: job.companyLogo || "",
+      minSalary: job.minSalary ? Number(job.minSalary) : undefined,
+      maxSalary: job.maxSalary ? Number(job.maxSalary) : undefined,
     }));
   } catch (error) {
     console.error('Error fetching jobs:', error);

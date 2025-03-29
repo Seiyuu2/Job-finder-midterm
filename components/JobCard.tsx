@@ -12,6 +12,19 @@ type JobCardProps = {
   saved?: boolean;
 };
 
+const getSalaryString = (job: Job): string => {
+  if (job.minSalary && job.maxSalary && job.minSalary !== job.maxSalary) {
+    return `$${job.minSalary} - $${job.maxSalary}`;
+  } else if (job.minSalary && !job.maxSalary) {
+    return `Starting at $${job.minSalary}`;
+  } else if (job.maxSalary && !job.minSalary) {
+    return `Up to $${job.maxSalary}`;
+  } else if (job.salary) {
+    return job.salary;
+  }
+  return "";
+};
+
 const JobCard: React.FC<JobCardProps> = ({
   job,
   onSave,
@@ -22,11 +35,10 @@ const JobCard: React.FC<JobCardProps> = ({
   const [showDescription, setShowDescription] = useState(false);
 
   const toggleDescription = () => {
-    setShowDescription((prev) => !prev);
+    setShowDescription(prev => !prev);
   };
 
-  // For this example, we simply display salary as-is.
-  const salaryString = job.salary || "";
+  const salaryString = getSalaryString(job);
 
   return (
     <View style={styles.card}>
@@ -41,38 +53,67 @@ const JobCard: React.FC<JobCardProps> = ({
         </View>
       </View>
 
-      {/* Key Information Chips */}
-      <View style={styles.keyInfoRow}>
-        {salaryString !== "" && (
-          <View style={styles.infoChip}>
-            <Text style={styles.infoChipText}>{salaryString}</Text>
-          </View>
-        )}
-        {job.jobType && (
-          <View style={styles.infoChip}>
-            <Text style={styles.infoChipText}>{job.jobType}</Text>
-          </View>
-        )}
-        {job.workModel && (
-          <View style={styles.infoChip}>
-            <Text style={styles.infoChipText}>{job.workModel}</Text>
-          </View>
-        )}
-        {job.seniorityLevel && (
-          <View style={styles.infoChip}>
-            <Text style={styles.infoChipText}>{job.seniorityLevel}</Text>
-          </View>
+      {/* Details Section */}
+      <View style={styles.detailsSection}>
+        {job.seniorityLevel ? (
+          <Text style={styles.detailText}>
+            <Text style={styles.detailLabel}>Seniority Level: </Text>
+            {job.seniorityLevel}
+          </Text>
+        ) : null}
+        {job.workModel ? (
+          <Text style={styles.detailText}>
+            <Text style={styles.detailLabel}>Work Model: </Text>
+            {job.workModel}
+          </Text>
+        ) : null}
+        {job.jobType ? (
+          <Text style={styles.detailText}>
+            <Text style={styles.detailLabel}>Job Type: </Text>
+            {job.jobType}
+          </Text>
+        ) : null}
+        {(job.minSalary || job.maxSalary || job.salary) && (
+          <>
+            <Text style={styles.detailText}>
+              <Text style={styles.detailLabel}>Starting Salary: </Text>
+              {job.minSalary ? `$${job.minSalary}` : 'N/A'}
+            </Text>
+            {job.maxSalary ? (
+              <Text style={styles.detailText}>
+                <Text style={styles.detailLabel}>Salary Cap: </Text>
+                {`$${job.maxSalary}`}
+              </Text>
+            ) : null}
+          </>
         )}
       </View>
 
-      {/* Location Chips */}
+      {/* Location Section */}
       {job.locations && job.locations.length > 0 && (
-        <View style={styles.locationsContainer}>
-          {job.locations.map((loc, index) => (
-            <View key={index.toString()} style={styles.locationChip}>
-              <Text style={styles.locationText}>{loc}</Text>
-            </View>
-          ))}
+        <View style={styles.section}>
+          <Text style={styles.sectionLabel}>Location:</Text>
+          <View style={styles.chipsContainer}>
+            {job.locations.map((loc, index) => (
+              <View key={index.toString()} style={styles.chip}>
+                <Text style={styles.chipText}>{loc}</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      )}
+
+      {/* Tags Section */}
+      {job.tags && job.tags.length > 0 && (
+        <View style={styles.section}>
+          <Text style={styles.sectionLabel}>TAGS:</Text>
+          <View style={styles.chipsContainer}>
+            {job.tags.map((tag, index) => (
+              <View key={index.toString()} style={styles.chip}>
+                <Text style={styles.chipText}>{tag}</Text>
+              </View>
+            ))}
+          </View>
         </View>
       )}
 
@@ -152,12 +193,30 @@ const styles = StyleSheet.create({
     color: '#555',
     marginTop: 2,
   },
-  keyInfoRow: {
+  detailsSection: {
+    marginVertical: 6,
+  },
+  detailText: {
+    fontSize: 12,
+    color: '#333',
+    marginVertical: 2,
+  },
+  detailLabel: {
+    fontWeight: 'bold',
+  },
+  section: {
+    marginVertical: 6,
+  },
+  sectionLabel: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginBottom: 4,
+  },
+  chipsContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginVertical: 4,
   },
-  infoChip: {
+  chip: {
     backgroundColor: '#e0e0e0',
     borderRadius: 12,
     paddingHorizontal: 10,
@@ -165,26 +224,9 @@ const styles = StyleSheet.create({
     marginRight: 6,
     marginBottom: 6,
   },
-  infoChipText: {
+  chipText: {
     fontSize: 12,
     color: '#333',
-  },
-  locationsContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginVertical: 6,
-  },
-  locationChip: {
-    backgroundColor: '#d4edda',
-    borderRadius: 12,
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    marginRight: 6,
-    marginBottom: 6,
-  },
-  locationText: {
-    fontSize: 12,
-    color: '#155724',
   },
   button: {
     backgroundColor: '#007bff',
