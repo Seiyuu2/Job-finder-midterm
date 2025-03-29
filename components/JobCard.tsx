@@ -39,6 +39,16 @@ const JobCard: React.FC<JobCardProps> = ({
   const toggleDescription = () => setShowDescription(prev => !prev);
   const salaryString = getSalaryString(job);
 
+  // When the save button is pressed, toggle saved state:
+  // If job is already saved, call onRemove; otherwise, call onSave.
+  const handleToggleSave = () => {
+    if (saved && onRemove) {
+      onRemove(job);
+    } else if (!saved && onSave) {
+      onSave(job);
+    }
+  };
+
   return (
     <View style={[styles.card, isDarkMode && styles.cardDark]}>
       {/* Header with logo, title, and company */}
@@ -126,7 +136,7 @@ const JobCard: React.FC<JobCardProps> = ({
         </View>
       )}
 
-      {/* Divider to separate tags and details toggle */}
+      {/* Divider */}
       <View style={styles.divider} />
 
       {/* Toggle Full Description */}
@@ -166,8 +176,7 @@ const JobCard: React.FC<JobCardProps> = ({
                     ? [styles.actionButton, styles.actionButtonDark]
                     : [styles.actionButton])
             }
-            onPress={() => onSave(job)}
-            disabled={saved}
+            onPress={handleToggleSave}
           >
             <Text style={saved 
                 ? (isDarkMode
@@ -287,7 +296,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   chip: {
-    backgroundColor: '#e0e0e0', // light mode chip
+    backgroundColor: '#e0e0e0', // default chip in light mode
     borderRadius: 12,
     paddingHorizontal: 10,
     paddingVertical: 4,
@@ -309,10 +318,10 @@ const styles = StyleSheet.create({
   divider: {
     borderBottomColor: '#ccc',
     borderBottomWidth: 1,
-    marginVertical: 15, // increased margin for clearer separation
+    marginVertical: 20, // increased margin for clearer separation
   },
 
-  // Action Button (Toggle and Action Buttons)
+  // Toggle / Action Button (for details toggle and action buttons)
   actionButton: {
     backgroundColor: '#007bff', // blue in light mode
     padding: 10,
@@ -322,14 +331,14 @@ const styles = StyleSheet.create({
     minWidth: 80,
   },
   actionButtonDark: {
-    backgroundColor: '#FFEB3B', // yellow in dark mode when not saved
+    backgroundColor: '#FFEB3B', // yellow button in dark mode when not toggled saved
   },
   actionButtonText: {
     color: '#FFF', // white text in light mode
     fontSize: 14,
   },
   actionButtonTextDark: {
-    color: '#000', // black text in dark mode when not saved
+    color: '#000', // black text in dark mode when not toggled saved
     fontSize: 14,
   },
   savedButtonLight: {
