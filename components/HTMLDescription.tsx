@@ -3,25 +3,38 @@ import React from 'react';
 import { useWindowDimensions } from 'react-native';
 import RenderHTML from 'react-native-render-html';
 
-interface HTMLDescriptionProps {
+type HTMLDescriptionProps = {
   htmlContent: string;
-}
+};
 
 const HTMLDescription: React.FC<HTMLDescriptionProps> = ({ htmlContent }) => {
   const { width } = useWindowDimensions();
 
-  // Optionally clean up newlines to reduce extra spacing
-  const cleanedHtml = htmlContent.replace(/(\r\n|\n|\r)/gm, ' ');
+  // Define custom styles for HTML tags
+  const tagsStyles = {
+    p: {
+      marginVertical: 4,
+      fontSize: 14,
+      lineHeight: 20,
+    },
+    li: {
+      marginLeft: 20,
+      marginVertical: 2,
+      fontSize: 14,
+      lineHeight: 20,
+    },
+    span: {
+      marginVertical: 2,
+      fontSize: 14,
+    },
+    // You can add more tag customizations here if needed
+  };
 
   return (
     <RenderHTML
       contentWidth={width}
-      source={{ html: cleanedHtml }}
-      tagsStyles={{
-        p: { marginVertical: 2, fontSize: 14, lineHeight: 18 },
-        li: { marginLeft: 20, marginVertical: 2, fontSize: 14, lineHeight: 18 },
-        span: { marginVertical: 0, fontSize: 14 },
-      }}
+      source={{ html: htmlContent || '' }}
+      tagsStyles={tagsStyles}
     />
   );
 };
