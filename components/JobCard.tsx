@@ -1,8 +1,9 @@
 // src/components/JobCard.tsx
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import HTMLDescription from './HTMLDescription';
 import { Job } from '../api/jobApi';
+import { ThemeContext } from '../context/ThemeContext';
 
 type JobCardProps = {
   job: Job;
@@ -33,54 +34,55 @@ const JobCard: React.FC<JobCardProps> = ({
   saved = false,
 }) => {
   const [showDescription, setShowDescription] = useState(false);
+  const { isDarkMode } = useContext(ThemeContext);
 
   const toggleDescription = () => {
-    setShowDescription(prev => !prev);
+    setShowDescription((prev) => !prev);
   };
 
   const salaryString = getSalaryString(job);
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, isDarkMode && styles.cardDark]}>
       {/* Header with logo, title, and company */}
       <View style={styles.header}>
         {job.companyLogo ? (
           <Image source={{ uri: job.companyLogo }} style={styles.logo} />
         ) : null}
         <View style={styles.headerText}>
-          <Text style={styles.title}>{job.title}</Text>
-          <Text style={styles.company}>{job.companyName}</Text>
+          <Text style={[styles.title, isDarkMode && styles.titleDark]}>{job.title}</Text>
+          <Text style={[styles.company, isDarkMode && styles.companyDark]}>{job.companyName}</Text>
         </View>
       </View>
 
       {/* Details Section */}
       <View style={styles.detailsSection}>
         {job.seniorityLevel ? (
-          <Text style={styles.detailText}>
-            <Text style={styles.detailLabel}>Seniority Level: </Text>
+          <Text style={[styles.detailText, isDarkMode && styles.detailTextDark]}>
+            <Text style={styles.detailLabel}>Position: </Text>
             {job.seniorityLevel}
           </Text>
         ) : null}
         {job.workModel ? (
-          <Text style={styles.detailText}>
+          <Text style={[styles.detailText, isDarkMode && styles.detailTextDark]}>
             <Text style={styles.detailLabel}>Work Model: </Text>
             {job.workModel}
           </Text>
         ) : null}
         {job.jobType ? (
-          <Text style={styles.detailText}>
+          <Text style={[styles.detailText, isDarkMode && styles.detailTextDark]}>
             <Text style={styles.detailLabel}>Job Type: </Text>
             {job.jobType}
           </Text>
         ) : null}
         {(job.minSalary || job.maxSalary || job.salary) && (
           <>
-            <Text style={styles.detailText}>
+            <Text style={[styles.detailText, isDarkMode && styles.detailTextDark]}>
               <Text style={styles.detailLabel}>Starting Salary: </Text>
               {job.minSalary ? `$${job.minSalary}` : 'N/A'}
             </Text>
             {job.maxSalary ? (
-              <Text style={styles.detailText}>
+              <Text style={[styles.detailText, isDarkMode && styles.detailTextDark]}>
                 <Text style={styles.detailLabel}>Salary Cap: </Text>
                 {`$${job.maxSalary}`}
               </Text>
@@ -92,11 +94,11 @@ const JobCard: React.FC<JobCardProps> = ({
       {/* Location Section */}
       {job.locations && job.locations.length > 0 && (
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>Location:</Text>
+          <Text style={[styles.sectionLabel, isDarkMode && styles.sectionLabelDark]}>Location:</Text>
           <View style={styles.chipsContainer}>
             {job.locations.map((loc, index) => (
-              <View key={index.toString()} style={styles.chip}>
-                <Text style={styles.chipText}>{loc}</Text>
+              <View key={index.toString()} style={[styles.chip, styles.locationChip]}>
+                <Text style={[styles.chipText, isDarkMode && styles.chipTextDark]}>{loc}</Text>
               </View>
             ))}
           </View>
@@ -106,11 +108,11 @@ const JobCard: React.FC<JobCardProps> = ({
       {/* Tags Section */}
       {job.tags && job.tags.length > 0 && (
         <View style={styles.section}>
-          <Text style={styles.sectionLabel}>TAGS:</Text>
+          <Text style={[styles.sectionLabel, isDarkMode && styles.sectionLabelDark]}>TAGS:</Text>
           <View style={styles.chipsContainer}>
             {job.tags.map((tag, index) => (
-              <View key={index.toString()} style={styles.chip}>
-                <Text style={styles.chipText}>{tag}</Text>
+              <View key={index.toString()} style={[styles.chip, styles.tagChip]}>
+                <Text style={[styles.chipText, isDarkMode && styles.chipTextDark]}>{tag}</Text>
               </View>
             ))}
           </View>
@@ -171,6 +173,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     elevation: 2,
   },
+  cardDark: {
+    backgroundColor: '#1c1c1c',
+  },
   header: {
     flexDirection: 'row',
     marginBottom: 8,
@@ -187,11 +192,18 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#000',
+  },
+  titleDark: {
+    color: '#FFF',
   },
   company: {
     fontSize: 14,
     color: '#555',
     marginTop: 2,
+  },
+  companyDark: {
+    color: '#CCC',
   },
   detailsSection: {
     marginVertical: 6,
@@ -200,6 +212,9 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#333',
     marginVertical: 2,
+  },
+  detailTextDark: {
+    color: '#EEE',
   },
   detailLabel: {
     fontWeight: 'bold',
@@ -211,6 +226,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     marginBottom: 4,
+    color: '#333',
+  },
+  sectionLabelDark: {
+    color: '#EEE',
   },
   chipsContainer: {
     flexDirection: 'row',
@@ -224,9 +243,15 @@ const styles = StyleSheet.create({
     marginRight: 6,
     marginBottom: 6,
   },
+  tagChip: {
+    backgroundColor: '#c8e6c9', // green background for tags
+  },
   chipText: {
     fontSize: 12,
     color: '#333',
+  },
+  chipTextDark: {
+    color: '#EEE',
   },
   button: {
     backgroundColor: '#007bff',
