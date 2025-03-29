@@ -12,6 +12,19 @@ type JobCardProps = {
   saved?: boolean;
 };
 
+const getSalaryString = (job: Job): string => {
+  if (job.minSalary && job.maxSalary && job.minSalary !== job.maxSalary) {
+    return `$${job.minSalary} - $${job.maxSalary}`;
+  } else if (job.minSalary && !job.maxSalary) {
+    return `Starting at $${job.minSalary}`;
+  } else if (job.maxSalary && !job.minSalary) {
+    return `Up to $${job.maxSalary}`;
+  } else if (job.salary) {
+    return job.salary;
+  }
+  return "";
+};
+
 const JobCard: React.FC<JobCardProps> = ({
   job,
   onSave,
@@ -25,8 +38,7 @@ const JobCard: React.FC<JobCardProps> = ({
     setShowDescription((prev) => !prev);
   };
 
-  // For this example, we simply display salary as-is.
-  const salaryString = job.salary || "";
+  const salaryString = getSalaryString(job);
 
   return (
     <View style={styles.card}>
@@ -48,21 +60,21 @@ const JobCard: React.FC<JobCardProps> = ({
             <Text style={styles.infoChipText}>{salaryString}</Text>
           </View>
         )}
-        {job.jobType && (
+        {job.jobType ? (
           <View style={styles.infoChip}>
             <Text style={styles.infoChipText}>{job.jobType}</Text>
           </View>
-        )}
-        {job.workModel && (
+        ) : null}
+        {job.workModel ? (
           <View style={styles.infoChip}>
             <Text style={styles.infoChipText}>{job.workModel}</Text>
           </View>
-        )}
-        {job.seniorityLevel && (
+        ) : null}
+        {job.seniorityLevel ? (
           <View style={styles.infoChip}>
             <Text style={styles.infoChipText}>{job.seniorityLevel}</Text>
           </View>
-        )}
+        ) : null}
       </View>
 
       {/* Location Chips */}
