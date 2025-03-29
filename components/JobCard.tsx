@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Job } from '../api/jobApi';
-import HTMLDescription from '../components/HTMLDescription';
+import HTMLDescription from './HTMLDescription';
 
 type JobCardProps = {
   job: Job;
@@ -24,11 +24,25 @@ const JobCard: React.FC<JobCardProps> = ({
       <Text style={styles.title}>{job.title}</Text>
       <Text style={styles.company}>{job.companyName}</Text>
       {job.salary && <Text style={styles.salary}>{job.salary}</Text>}
+      
+      {/* Render HTML description with custom formatting */}
       {job.description ? (
         <HTMLDescription htmlContent={job.description} />
       ) : (
         <Text style={styles.description}>No description available</Text>
       )}
+
+      {/* Render tags if available */}
+      {job.tags && job.tags.length > 0 && (
+        <View style={styles.tagsContainer}>
+          {job.tags.map((tag, index) => (
+            <View key={index} style={styles.tagChip}>
+              <Text style={styles.tagText}>{tag}</Text>
+            </View>
+          ))}
+        </View>
+      )}
+
       <View style={styles.buttonContainer}>
         {onSave && (
           <TouchableOpacity
@@ -77,15 +91,32 @@ const styles = StyleSheet.create({
   salary: {
     fontSize: 14,
     color: '#777',
+    marginVertical: 4,
   },
   description: {
     fontSize: 14,
     marginVertical: 5,
   },
+  tagsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginVertical: 8,
+  },
+  tagChip: {
+    backgroundColor: '#e0e0e0',
+    borderRadius: 15,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    marginRight: 6,
+    marginBottom: 6,
+  },
+  tagText: {
+    fontSize: 12,
+    color: '#333',
+  },
   buttonContainer: {
     flexDirection: 'row',
     marginTop: 10,
-    justifyContent: 'flex-start',
   },
   button: {
     backgroundColor: '#007bff',
