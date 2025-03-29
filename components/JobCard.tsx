@@ -39,19 +39,22 @@ const JobCard: React.FC<JobCardProps> = ({
   const toggleDescription = () => setShowDescription(prev => !prev);
   const salaryString = getSalaryString(job);
 
-  // When the save button is pressed, toggle saved state:
-  // If job is already saved, call onRemove; otherwise, call onSave.
+  // Toggle Save: if already saved, call onRemove; otherwise, call onSave.
   const handleToggleSave = () => {
-    if (saved && onRemove) {
-      onRemove(job);
-    } else if (!saved && onSave) {
-      onSave(job);
+    if (saved) {
+      if (onRemove) {
+        onRemove(job);
+      }
+    } else {
+      if (onSave) {
+        onSave(job);
+      }
     }
   };
 
   return (
     <View style={[styles.card, isDarkMode && styles.cardDark]}>
-      {/* Header with logo, title, and company */}
+      {/* Header: Logo, Title, Company */}
       <View style={styles.header}>
         {job.companyLogo ? (
           <Image source={{ uri: job.companyLogo }} style={styles.logo} />
@@ -136,7 +139,7 @@ const JobCard: React.FC<JobCardProps> = ({
         </View>
       )}
 
-      {/* Divider */}
+      {/* Divider for visual separation */}
       <View style={styles.divider} />
 
       {/* Toggle Full Description */}
@@ -178,13 +181,10 @@ const JobCard: React.FC<JobCardProps> = ({
             }
             onPress={handleToggleSave}
           >
-            <Text style={saved 
-                ? (isDarkMode
-                    ? [styles.actionButtonText, styles.actionButtonTextDark]
-                    : styles.actionButtonText)
-                : (isDarkMode
-                    ? [styles.actionButtonText, styles.actionButtonTextDark]
-                    : styles.actionButtonText)
+            <Text style={
+              isDarkMode
+                ? [styles.actionButtonText, styles.actionButtonTextDark]
+                : styles.actionButtonText
             }>
               {saved ? 'Saved' : 'Save Job'}
             </Text>
@@ -195,7 +195,11 @@ const JobCard: React.FC<JobCardProps> = ({
             style={isDarkMode ? [styles.actionButton, styles.actionButtonDark] : [styles.actionButton]}
             onPress={() => onApply(job)}
           >
-            <Text style={isDarkMode ? [styles.actionButtonText, styles.actionButtonTextDark] : styles.actionButtonText}>
+            <Text style={
+              isDarkMode
+                ? [styles.actionButtonText, styles.actionButtonTextDark]
+                : styles.actionButtonText
+            }>
               Apply
             </Text>
           </TouchableOpacity>
@@ -205,7 +209,11 @@ const JobCard: React.FC<JobCardProps> = ({
             style={isDarkMode ? [styles.actionButton, styles.actionButtonDark] : [styles.actionButton]}
             onPress={() => onRemove(job)}
           >
-            <Text style={isDarkMode ? [styles.actionButtonText, styles.actionButtonTextDark] : styles.actionButtonText}>
+            <Text style={
+              isDarkMode
+                ? [styles.actionButtonText, styles.actionButtonTextDark]
+                : styles.actionButtonText
+            }>
               Remove
             </Text>
           </TouchableOpacity>
@@ -230,7 +238,6 @@ const styles = StyleSheet.create({
   cardDark: {
     backgroundColor: '#1c1c1c',
   },
-
   // Header
   header: {
     flexDirection: 'row',
@@ -261,7 +268,6 @@ const styles = StyleSheet.create({
   companyDark: {
     color: '#CCC',
   },
-
   // Details Section
   detailsSection: {
     marginVertical: 6,
@@ -277,7 +283,6 @@ const styles = StyleSheet.create({
   detailLabel: {
     fontWeight: 'bold',
   },
-
   // Sections (Location, Tags)
   section: {
     marginVertical: 6,
@@ -313,14 +318,12 @@ const styles = StyleSheet.create({
   chipTextDark: {
     color: '#000', // black text in dark mode
   },
-
-  // Divider between tags and toggle button
+  // Divider between tags and details toggle
   divider: {
     borderBottomColor: '#ccc',
     borderBottomWidth: 1,
-    marginVertical: 20, // increased margin for clearer separation
+    marginVertical: 20,
   },
-
   // Toggle / Action Button (for details toggle and action buttons)
   actionButton: {
     backgroundColor: '#007bff', // blue in light mode
@@ -331,14 +334,14 @@ const styles = StyleSheet.create({
     minWidth: 80,
   },
   actionButtonDark: {
-    backgroundColor: '#FFEB3B', // yellow button in dark mode when not toggled saved
+    backgroundColor: '#FFEB3B', // yellow in dark mode when not saved
   },
   actionButtonText: {
     color: '#FFF', // white text in light mode
     fontSize: 14,
   },
   actionButtonTextDark: {
-    color: '#000', // black text in dark mode when not toggled saved
+    color: '#000', // black text in dark mode when not saved
     fontSize: 14,
   },
   savedButtonLight: {
@@ -347,12 +350,10 @@ const styles = StyleSheet.create({
   savedButtonDark: {
     backgroundColor: '#FFA500', // orange in dark mode when saved
   },
-
   // Toggle Button (reuse actionButton style)
   toggleButton: {
     alignSelf: 'flex-start',
   },
-
   // Action Row
   actionRow: {
     flexDirection: 'row',
