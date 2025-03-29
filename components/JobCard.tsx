@@ -36,7 +36,8 @@ const JobCard: React.FC<JobCardProps> = ({
   const [showDescription, setShowDescription] = useState(false);
   const { isDarkMode } = useContext(ThemeContext);
 
-  const toggleDescription = () => setShowDescription((prev) => !prev);
+  const toggleDescription = () => setShowDescription(prev => !prev);
+
   const salaryString = getSalaryString(job);
 
   return (
@@ -98,8 +99,13 @@ const JobCard: React.FC<JobCardProps> = ({
           </Text>
           <View style={styles.chipsContainer}>
             {job.locations.map((loc, index) => (
-              <View key={index.toString()} style={styles.yellowChip}>
-                <Text style={styles.blackText}>{loc}</Text>
+              <View
+                key={index.toString()}
+                style={[styles.chip, isDarkMode && styles.chipDark]}
+              >
+                <Text style={[styles.chipText, isDarkMode && styles.chipTextDark]}>
+                  {loc}
+                </Text>
               </View>
             ))}
           </View>
@@ -114,8 +120,13 @@ const JobCard: React.FC<JobCardProps> = ({
           </Text>
           <View style={styles.chipsContainer}>
             {job.tags.map((tag, index) => (
-              <View key={index.toString()} style={styles.yellowChip}>
-                <Text style={styles.blackText}>{tag}</Text>
+              <View
+                key={index.toString()}
+                style={[styles.chip, isDarkMode && styles.chipDark]}
+              >
+                <Text style={[styles.chipText, isDarkMode && styles.chipTextDark]}>
+                  {tag}
+                </Text>
               </View>
             ))}
           </View>
@@ -127,18 +138,22 @@ const JobCard: React.FC<JobCardProps> = ({
         <>
           <HTMLDescription htmlContent={job.description || ''} />
           <TouchableOpacity
-            style={styles.yellowButton}
+            style={[styles.actionButton, isDarkMode && styles.actionButtonDark]}
             onPress={toggleDescription}
           >
-            <Text style={styles.blackText}>Hide Details</Text>
+            <Text style={[styles.actionButtonText, isDarkMode && styles.actionButtonTextDark]}>
+              Hide Details
+            </Text>
           </TouchableOpacity>
         </>
       ) : (
         <TouchableOpacity
-          style={styles.yellowButton}
+          style={[styles.actionButton, isDarkMode && styles.actionButtonDark]}
           onPress={toggleDescription}
         >
-          <Text style={styles.blackText}>View More Details</Text>
+          <Text style={[styles.actionButtonText, isDarkMode && styles.actionButtonTextDark]}>
+            View More Details
+          </Text>
         </TouchableOpacity>
       )}
 
@@ -146,21 +161,33 @@ const JobCard: React.FC<JobCardProps> = ({
       <View style={styles.actionRow}>
         {onSave && (
           <TouchableOpacity
-            style={[styles.yellowButton, saved && styles.savedButton]}
+            style={[styles.actionButton, saved && styles.savedButton, isDarkMode && styles.actionButtonDark]}
             onPress={() => onSave(job)}
             disabled={saved}
           >
-            <Text style={styles.blackText}>{saved ? 'Saved' : 'Save Job'}</Text>
+            <Text style={[styles.actionButtonText, isDarkMode && styles.actionButtonTextDark]}>
+              {saved ? 'Saved' : 'Save Job'}
+            </Text>
           </TouchableOpacity>
         )}
         {onApply && (
-          <TouchableOpacity style={styles.yellowButton} onPress={() => onApply(job)}>
-            <Text style={styles.blackText}>Apply</Text>
+          <TouchableOpacity
+            style={[styles.actionButton, isDarkMode && styles.actionButtonDark]}
+            onPress={() => onApply(job)}
+          >
+            <Text style={[styles.actionButtonText, isDarkMode && styles.actionButtonTextDark]}>
+              Apply
+            </Text>
           </TouchableOpacity>
         )}
         {onRemove && (
-          <TouchableOpacity style={styles.yellowButton} onPress={() => onRemove(job)}>
-            <Text style={styles.blackText}>Remove</Text>
+          <TouchableOpacity
+            style={[styles.actionButton, isDarkMode && styles.actionButtonDark]}
+            onPress={() => onRemove(job)}
+          >
+            <Text style={[styles.actionButtonText, isDarkMode && styles.actionButtonTextDark]}>
+              Remove
+            </Text>
           </TouchableOpacity>
         )}
       </View>
@@ -215,7 +242,7 @@ const styles = StyleSheet.create({
     color: '#CCC',
   },
 
-  // Details
+  // Details Section
   detailsSection: {
     marginVertical: 6,
   },
@@ -248,40 +275,54 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-
-  // Common yellow chip style
-  yellowChip: {
-    backgroundColor: '#FFEB3B',
+  chip: {
+    backgroundColor: '#e0e0e0', // original chip color in light mode
     borderRadius: 12,
     paddingHorizontal: 10,
     paddingVertical: 4,
     marginRight: 6,
     marginBottom: 6,
   },
-  blackText: {
-    color: '#000',
+  chipDark: {
+    backgroundColor: '#FFEB3B', // yellow in dark mode
+  },
+  chipText: {
     fontSize: 12,
+    color: '#333',
+  },
+  chipTextDark: {
+    color: '#000', // black text in dark mode
   },
 
-  // Buttons
-  yellowButton: {
-    backgroundColor: '#FFEB3B',
+  // Action Button (Toggle Description and Action Buttons)
+  actionButton: {
+    backgroundColor: '#007bff', // original blue button in light mode
     padding: 10,
     borderRadius: 5,
+    marginRight: 8,
     alignItems: 'center',
-    marginTop: 10,
-    marginRight: 6,
+    minWidth: 80,
+  },
+  actionButtonDark: {
+    backgroundColor: '#FFEB3B', // yellow button in dark mode
+  },
+  actionButtonText: {
+    color: '#FFF', // white text in light mode
+    fontSize: 14,
+  },
+  actionButtonTextDark: {
+    color: '#000', // black text in dark mode
+    fontSize: 14,
   },
 
-  // Action row
+  // Toggle Button (reusing actionButton styles)
+  toggleButton: {
+    alignSelf: 'flex-start',
+  },
+
+  // Action Row
   actionRow: {
     flexDirection: 'row',
     marginTop: 10,
   },
-  savedButton: {
-    // If you want a different style for saved, uncomment or modify. 
-    // For now, it just uses the same yellow background.
-    // backgroundColor: '#28a745',
-  },
 });
-
