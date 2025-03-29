@@ -126,7 +126,7 @@ const JobCard: React.FC<JobCardProps> = ({
         </View>
       )}
 
-      {/* Divider */}
+      {/* Divider to separate tags and details toggle */}
       <View style={styles.divider} />
 
       {/* Toggle Full Description */}
@@ -153,35 +153,50 @@ const JobCard: React.FC<JobCardProps> = ({
         </TouchableOpacity>
       )}
 
-      {/* Action Buttons */}
+      {/* Action Buttons (centered) */}
       <View style={[styles.actionRow, { justifyContent: 'center' }]}>
         {onSave && (
           <TouchableOpacity
-            style={[styles.actionButton, saved && styles.savedButton, isDarkMode && styles.actionButtonDark]}
+            style={
+              saved
+                ? (isDarkMode
+                    ? [styles.actionButton, styles.savedButtonDark]
+                    : [styles.actionButton, styles.savedButtonLight])
+                : (isDarkMode
+                    ? [styles.actionButton, styles.actionButtonDark]
+                    : [styles.actionButton])
+            }
             onPress={() => onSave(job)}
             disabled={saved}
           >
-            <Text style={[styles.actionButtonText, isDarkMode && styles.actionButtonTextDark]}>
+            <Text style={saved 
+                ? (isDarkMode
+                    ? [styles.actionButtonText, styles.actionButtonTextDark]
+                    : styles.actionButtonText)
+                : (isDarkMode
+                    ? [styles.actionButtonText, styles.actionButtonTextDark]
+                    : styles.actionButtonText)
+            }>
               {saved ? 'Saved' : 'Save Job'}
             </Text>
           </TouchableOpacity>
         )}
         {onApply && (
           <TouchableOpacity
-            style={[styles.actionButton, isDarkMode && styles.actionButtonDark]}
+            style={isDarkMode ? [styles.actionButton, styles.actionButtonDark] : [styles.actionButton]}
             onPress={() => onApply(job)}
           >
-            <Text style={[styles.actionButtonText, isDarkMode && styles.actionButtonTextDark]}>
+            <Text style={isDarkMode ? [styles.actionButtonText, styles.actionButtonTextDark] : styles.actionButtonText}>
               Apply
             </Text>
           </TouchableOpacity>
         )}
         {onRemove && (
           <TouchableOpacity
-            style={[styles.actionButton, isDarkMode && styles.actionButtonDark]}
+            style={isDarkMode ? [styles.actionButton, styles.actionButtonDark] : [styles.actionButton]}
             onPress={() => onRemove(job)}
           >
-            <Text style={[styles.actionButtonText, isDarkMode && styles.actionButtonTextDark]}>
+            <Text style={isDarkMode ? [styles.actionButtonText, styles.actionButtonTextDark] : styles.actionButtonText}>
               Remove
             </Text>
           </TouchableOpacity>
@@ -206,6 +221,7 @@ const styles = StyleSheet.create({
   cardDark: {
     backgroundColor: '#1c1c1c',
   },
+
   // Header
   header: {
     flexDirection: 'row',
@@ -236,6 +252,7 @@ const styles = StyleSheet.create({
   companyDark: {
     color: '#CCC',
   },
+
   // Details Section
   detailsSection: {
     marginVertical: 6,
@@ -251,6 +268,7 @@ const styles = StyleSheet.create({
   detailLabel: {
     fontWeight: 'bold',
   },
+
   // Sections (Location, Tags)
   section: {
     marginVertical: 6,
@@ -269,7 +287,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   chip: {
-    backgroundColor: '#e0e0e0', // default chip color in light mode
+    backgroundColor: '#e0e0e0', // light mode chip
     borderRadius: 12,
     paddingHorizontal: 10,
     paddingVertical: 4,
@@ -277,7 +295,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   chipDark: {
-    backgroundColor: '#FFEB3B', // yellow chips in dark mode
+    backgroundColor: '#FFEB3B', // yellow chip in dark mode
   },
   chipText: {
     fontSize: 12,
@@ -286,15 +304,17 @@ const styles = StyleSheet.create({
   chipTextDark: {
     color: '#000', // black text in dark mode
   },
-  // Divider
+
+  // Divider between tags and toggle button
   divider: {
     borderBottomColor: '#ccc',
     borderBottomWidth: 1,
-    marginVertical: 10,
+    marginVertical: 15, // increased margin for clearer separation
   },
-  // Toggle / Action Button
+
+  // Action Button (Toggle and Action Buttons)
   actionButton: {
-    backgroundColor: '#007bff', // default blue button in light mode
+    backgroundColor: '#007bff', // blue in light mode
     padding: 10,
     borderRadius: 5,
     marginRight: 8,
@@ -302,20 +322,28 @@ const styles = StyleSheet.create({
     minWidth: 80,
   },
   actionButtonDark: {
-    backgroundColor: '#FFEB3B', // yellow button in dark mode
+    backgroundColor: '#FFEB3B', // yellow in dark mode when not saved
   },
   actionButtonText: {
     color: '#FFF', // white text in light mode
     fontSize: 14,
   },
   actionButtonTextDark: {
-    color: '#000', // black text in dark mode
+    color: '#000', // black text in dark mode when not saved
     fontSize: 14,
   },
+  savedButtonLight: {
+    backgroundColor: '#28a745', // green in light mode when saved
+  },
+  savedButtonDark: {
+    backgroundColor: '#FFA500', // orange in dark mode when saved
+  },
+
   // Toggle Button (reuse actionButton style)
   toggleButton: {
     alignSelf: 'flex-start',
   },
+
   // Action Row
   actionRow: {
     flexDirection: 'row',
