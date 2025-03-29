@@ -49,9 +49,7 @@ const JobCard: React.FC<JobCardProps> = ({
         ) : null}
         <View style={styles.headerText}>
           <Text style={[styles.title, isDarkMode && styles.titleDark]}>{job.title}</Text>
-          <Text style={[styles.company, isDarkMode && styles.companyDark]}>
-            {job.companyName}
-          </Text>
+          <Text style={[styles.company, isDarkMode && styles.companyDark]}>{job.companyName}</Text>
         </View>
       </View>
 
@@ -99,10 +97,7 @@ const JobCard: React.FC<JobCardProps> = ({
           </Text>
           <View style={styles.chipsContainer}>
             {job.locations.map((loc, index) => (
-              <View
-                key={index.toString()}
-                style={[styles.chip, isDarkMode && styles.chipDark]}
-              >
+              <View key={index.toString()} style={[styles.chip, isDarkMode && styles.chipDark]}>
                 <Text style={[styles.chipText, isDarkMode && styles.chipTextDark]}>
                   {loc}
                 </Text>
@@ -112,18 +107,15 @@ const JobCard: React.FC<JobCardProps> = ({
         </View>
       )}
 
-      {/* Tags Section */}
+      {/* Tags Section with extra margin at bottom */}
       {job.tags && job.tags.length > 0 && (
-        <View style={styles.section}>
+        <View style={[styles.section, { marginBottom: 10 }]}>
           <Text style={[styles.sectionLabel, isDarkMode && styles.sectionLabelDark]}>
             TAGS:
           </Text>
           <View style={styles.chipsContainer}>
             {job.tags.map((tag, index) => (
-              <View
-                key={index.toString()}
-                style={[styles.chip, isDarkMode && styles.chipDark]}
-              >
+              <View key={index.toString()} style={[styles.chip, isDarkMode && styles.chipDark]}>
                 <Text style={[styles.chipText, isDarkMode && styles.chipTextDark]}>
                   {tag}
                 </Text>
@@ -158,7 +150,7 @@ const JobCard: React.FC<JobCardProps> = ({
       )}
 
       {/* Action Buttons */}
-      <View style={styles.actionRow}>
+      <View style={[styles.actionRow, { justifyContent: 'center' }]}>
         {onSave && (
           <TouchableOpacity
             style={[styles.actionButton, saved && styles.savedButton, isDarkMode && styles.actionButtonDark]}
@@ -276,7 +268,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   chip: {
-    backgroundColor: '#e0e0e0', // original chip color in light mode
+    backgroundColor: '#e0e0e0', // default chip color in light mode
     borderRadius: 12,
     paddingHorizontal: 10,
     paddingVertical: 4,
@@ -284,7 +276,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   chipDark: {
-    backgroundColor: '#FFEB3B', // yellow in dark mode
+    backgroundColor: '#FFEB3B', // yellow chips in dark mode
   },
   chipText: {
     fontSize: 12,
@@ -294,9 +286,9 @@ const styles = StyleSheet.create({
     color: '#000', // black text in dark mode
   },
 
-  // Action Button (Toggle Description and Action Buttons)
+  // Toggle / Action Button (for details toggle and Save/Apply/Remove)
   actionButton: {
-    backgroundColor: '#007bff', // original blue button in light mode
+    backgroundColor: '#007bff', // default blue in light mode
     padding: 10,
     borderRadius: 5,
     marginRight: 8,
@@ -315,7 +307,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 
-  // Toggle Button (reusing actionButton styles)
+  // Toggle Button (reuse actionButton style)
   toggleButton: {
     alignSelf: 'flex-start',
   },
