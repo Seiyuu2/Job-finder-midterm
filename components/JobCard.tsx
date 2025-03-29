@@ -23,17 +23,12 @@ const JobCard: React.FC<JobCardProps> = ({
     <View style={styles.card}>
       <Text style={styles.title}>{job.title}</Text>
       <Text style={styles.company}>{job.companyName}</Text>
-
-      {/* If there's a salary, you can show it here */}
       {job.salary && <Text style={styles.salary}>{job.salary}</Text>}
-
-      {/* RENDER HTML */}
       {job.description ? (
         <HTMLDescription htmlContent={job.description} />
       ) : (
-        <Text style={styles.description}>No description</Text>
+        <Text style={styles.description}>No description available</Text>
       )}
-
       <View style={styles.buttonContainer}>
         {onSave && (
           <TouchableOpacity
@@ -41,9 +36,7 @@ const JobCard: React.FC<JobCardProps> = ({
             onPress={() => onSave(job)}
             disabled={saved}
           >
-            <Text style={styles.buttonText}>
-              {saved ? 'Saved' : 'Save Job'}
-            </Text>
+            <Text style={styles.buttonText}>{saved ? 'Saved' : 'Save Job'}</Text>
           </TouchableOpacity>
         )}
         {onApply && (
@@ -84,7 +77,6 @@ const styles = StyleSheet.create({
   salary: {
     fontSize: 14,
     color: '#777',
-    marginBottom: 8,
   },
   description: {
     fontSize: 14,
@@ -93,6 +85,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     marginTop: 10,
+    justifyContent: 'flex-start',
   },
   button: {
     backgroundColor: '#007bff',
