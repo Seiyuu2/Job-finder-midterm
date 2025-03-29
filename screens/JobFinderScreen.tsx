@@ -18,7 +18,7 @@ const JobFinderScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
 
   const { savedJobs, addJob } = useContext(SavedJobsContext);
-  const { isDarkMode, toggleTheme } = useContext(ThemeContext);
+  const { isDarkMode } = useContext(ThemeContext);
 
   useEffect(() => {
     (async () => {
@@ -72,8 +72,7 @@ const JobFinderScreen: React.FC<Props> = ({ navigation }) => {
         title="Go to Saved Jobs"
         onPress={() => navigation.navigate('SavedJobsScreen')}
       />
-      {/* A button to toggle dark mode */}
-      <Button title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"} onPress={toggleTheme} />
+      {/* Removed the second dark mode button here, relying on the top-right toggle. */}
     </View>
   );
 };
