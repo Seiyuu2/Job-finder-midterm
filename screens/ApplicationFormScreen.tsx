@@ -22,7 +22,7 @@ const ApplicationFormScreen: React.FC<Props> = ({ navigation, route }) => {
     control,
     handleSubmit,
     reset,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormData>();
 
   const onSubmit = (data: FormData) => {
@@ -31,7 +31,9 @@ const ApplicationFormScreen: React.FC<Props> = ({ navigation, route }) => {
         text: 'Okay',
         onPress: () => {
           reset();
-          navigation.navigate('JobFinderScreen');
+          // Instead of navigating to JobFinderScreen,
+          // we pop to the top of the stack so that the back arrow is removed.
+          navigation.popToTop();
         },
       },
     ]);
@@ -61,7 +63,7 @@ const ApplicationFormScreen: React.FC<Props> = ({ navigation, route }) => {
           name="email"
           rules={{
             required: 'Email is required.',
-            validate: validateEmail || 'Invalid email format (letter@email.com).'
+            validate: validateEmail || 'Invalid email format (letter@email.com).',
           }}
           render={({ field: { onChange, value } }) => (
             <>
@@ -81,7 +83,7 @@ const ApplicationFormScreen: React.FC<Props> = ({ navigation, route }) => {
           name="contactNumber"
           rules={{
             required: 'Contact Number is required.',
-            validate: validatePhoneNumber || 'Invalid phone number. Only numbers allowed.'
+            validate: validatePhoneNumber || 'Invalid phone number. Only numbers allowed.',
           }}
           render={({ field: { onChange, value } }) => (
             <>
