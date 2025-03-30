@@ -7,6 +7,7 @@ import { fetchJobs, Job } from '../api/jobApi';
 import JobCard from '../components/JobCard';
 import SearchBar from '../components/SearchBar';
 import { SavedJobsContext } from '../context/SavedJobsContext';
+import { ThemeContext } from '../context/ThemeContext';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'JobFinderScreen'>;
 
@@ -17,6 +18,7 @@ const JobFinderScreen: React.FC<Props> = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
 
   const { savedJobs, addJob } = useContext(SavedJobsContext);
+  const { isDarkMode } = useContext(ThemeContext);
 
   useEffect(() => {
     (async () => {
@@ -52,7 +54,7 @@ const JobFinderScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, isDarkMode && styles.containerDark]}>
       <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <FlatList
         data={filteredJobs}
@@ -70,6 +72,7 @@ const JobFinderScreen: React.FC<Props> = ({ navigation }) => {
         title="Go to Saved Jobs"
         onPress={() => navigation.navigate('SavedJobsScreen')}
       />
+      {/* Removed the second dark mode button here, relying on the top-right toggle. */}
     </View>
   );
 };
@@ -77,6 +80,10 @@ const JobFinderScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
+  },
+  containerDark: {
+    backgroundColor: '#121212',
   },
 });
 
